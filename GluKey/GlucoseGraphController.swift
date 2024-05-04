@@ -44,7 +44,7 @@ class GlucoseGraphController: NSViewController {
         // -----------------------------
         //
         UserDefaults.standard.register(defaults: [
-            "useAnimations" : true,
+            "useAnimations" : false,
             "userLow"       : Constants.userLowDefault,
             "userHigh"      : Constants.userHighDefault,
             "useMmol"       : Constants.useMmolDefault,

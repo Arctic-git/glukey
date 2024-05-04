@@ -67,14 +67,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //
         if let button = statusItem.button {
             button.action = #selector(AppDelegate.togglePopover(_:))
+            button.sendAction(on: [.leftMouseDown])
         }
         
         
         // Define Popover
         //
         Constants.popover.contentViewController = GlucoseGraphController(nibName: "GlucoseGraphController", bundle: nil)
-        
-        
+        Constants.popover.animates = false
+    
         // Initial load of glucose data
         //
         loadGlucoseData()
@@ -168,17 +169,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateMenuBarValue() {
         if Constants.glucoseData.isEmpty == false && GlucoseHelper.validGuloseReading() {
             let current_data = GlucoseHelper.currentGulcoseReading()
+            
+            let directions = ["", "↑↑", "↑", "↗", "→", "↘", "↓", "↓↓", "?", "-"]
 
             // set value
             // if using mmol/L format, then divide by 18 and use `format:"%.01f"`
             if UserDefaults.standard.bool(forKey: "useMmol") {
-                self.statusItem.title = String(format:"%.01f", current_data["Value"] as! Double)
+                self.statusItem.title = String(format:"%@ %.01f", directions[current_data["Trend"] as! Int], current_data["Value"] as! Double)
             } else {
-                self.statusItem.title = String(format:"%.f", current_data["Value"] as! Double)
+                self.statusItem.title = String(format:"%@ %.f", directions[current_data["Trend"] as! Int], current_data["Value"] as! Double)
             }
 
             // set trend line
-            self.statusItem.image = NSImage(named: "\(Constants.statusIconBase)\(current_data["Trend"]!)")
+//            self.statusItem.image = NSImage(named: "\(Constants.statusIconBase)\(current_data["Trend"]!)")
+            self.statusItem.image = NSImage()
         } else {
             // No Data or out-of-date
             self.statusItem.title = "---"
@@ -211,7 +215,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func getSessionIdFromDexcom() {
         let keychain    = KeychainSwift()
         let parameters  = [
-            "accountName": UserDefaults.standard.string(forKey: "dexcomUsername"),
+            "accountId": UserDefaults.standard.string(forKey: "dexcomUsername"),
             "password": keychain.get("GluKey Password"),
             "applicationId":"d8665ade-9673-4e27-9ff6-92db4ce13d13"
         ]

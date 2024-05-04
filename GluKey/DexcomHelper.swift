@@ -24,7 +24,7 @@ class DexcomHelper {
     // Returns Dexcom authenication URL for correct account type
     //
     static func authenticateURL() -> String {
-        return "\(baseURL())ShareWebServices/Services/General/LoginPublisherAccountByName"
+        return "\(baseURL())ShareWebServices/Services/General/LoginPublisherAccountById"
     }
     
     

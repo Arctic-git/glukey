@@ -81,7 +81,7 @@ class ViewController: NSViewController {
         // -----------------------------
         //
         UserDefaults.standard.register(defaults: [
-            "useAnimations" : true,                         // future option
+            "useAnimations" : false,                         // future option
             "use12HourClock": true,                         // future option
             "userLow"       : Constants.userLowDefault,
             "userHigh"      : Constants.userHighDefault,
